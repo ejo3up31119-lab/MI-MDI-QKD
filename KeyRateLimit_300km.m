@@ -40,7 +40,7 @@ mux_raw_key_rate_final_1 = 1;        % Initial reference value
 
 for n = 19:40
     
-    P_OS = eta_OS^(3*n - 3);                                     % Optical switch transmission probability
+    P_OS = eta_OS^(3*n);                                     % Optical switch transmission probability
     t = (3 * L) / C;                                             % Transmission time
     e_p = (1 - exp(-t/T2)) / 2;                                  % Phase error rate
     e_b = (1 - exp(-t/T1)) / 2;                                  % Bit error rate
@@ -54,7 +54,7 @@ for n = 19:40
     H2b = -(e_b_dc .* log2(e_b_dc) + (1 - e_b_dc) .* log2(1 - e_b_dc));
 
     % Raw and final key rate calculation
-    mux_raw_key_rate = n * (1 - H2b - H2p);
+    mux_raw_key_rate = (n+1) * (1 - H2b - H2p);
     mux_raw_key_rate(mux_raw_key_rate < 0) = 0;                  % Floor key rate at 0
     mux_raw_key_rate_final = 0.5 * ((P_OS * P_s) + (1 - (P_OS * P_s)) * P_dc) .* mux_raw_key_rate;
     
@@ -78,4 +78,5 @@ plot(20:40, key_rate_ratio, '-s', 'LineWidth', 1.5, ...
 
 % legend('2-MUX', '4-MUX', '6-MUX', '8-MUX', '16-MUX', '32-MUX', '36-MUX', '40-MUX', 'FontName', 'Times New Roman', 'FontSize', 12);
 xlabel('n', 'FontName', 'Times New Roman', 'FontSize', 14);
+
 ylabel('r_n', 'FontName', 'Times New Roman', 'FontSize', 14);
