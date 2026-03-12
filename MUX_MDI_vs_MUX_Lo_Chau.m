@@ -60,7 +60,7 @@ for n = [2 4 6 8]
     e_p_dc = e_p_AC_dc + e_p_BC_dc - 2 .* e_p_AC_dc .* e_p_BC_dc;
     e_b_dc = e_b_AC_dc + e_b_BC_dc - 2 .* e_b_AC_dc .* e_b_BC_dc;
             
-    % Error composition under entanglement swapping
+    % Binary entropies for phase and bit errors
     H2p = -(e_p_dc .* log2(e_p_dc) + (1 - e_p_dc) .* log2(1 - e_p_dc));
     H2b = -(e_b_dc .* log2(e_b_dc) + (1 - e_b_dc) .* log2(1 - e_b_dc));
 
@@ -151,3 +151,4 @@ legend(h_lgd, labels, ...
 xlabel('Distance (km)', 'FontSize', 14);
 
 ylabel('Secret Key Rate (bits/channel use)', 'FontSize', 14);
+
