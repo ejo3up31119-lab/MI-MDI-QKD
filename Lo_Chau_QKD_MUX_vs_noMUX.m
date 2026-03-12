@@ -35,9 +35,9 @@ hold on;
 grid on;
 
 % --- MUX Scheme Calculation ---
-for n = [2 4 6 8 28]
+for n = [1 3 5 7 27]
     
-    P_OS = eta_OS^(3*n - 3);                                        % Optical switch transmission probability
+    P_OS = eta_OS^(3*n);                                            % Optical switch transmission probability
     P_tot = 1 - (1 - P_OS .* P_s).^alpha;                           % Total detection probability
     t = (3 * L) / C;                                                % Transmission time
     e_p = (1 - exp(-t/T2)) / 2;                                     % Phase error rate
@@ -52,7 +52,7 @@ for n = [2 4 6 8 28]
     H2b = -(e_b_dc .* log2(e_b_dc) + (1 - e_b_dc) .* log2(1 - e_b_dc));
     
     % Raw and final key rate calculation
-    mux_raw_key_rate = n * (1 - H2b - H2p);
+    mux_raw_key_rate = (n+1) * (1 - H2b - H2p);
     mux_raw_key_rate(mux_raw_key_rate < 0) = 0;                     % Floor key rate at 0
     mux_raw_key_rate_final = 0.5 * (P_tot + (1 - P_tot) * P_dc) .* mux_raw_key_rate;
     
@@ -61,7 +61,7 @@ for n = [2 4 6 8 28]
 end
 
 % --- Non-MUX Scheme Calculation ---
-for i = [2 4 6 8 28]
+for i = [1 3 5 7 27]
     
     mux_key_rate_final = zeros(1, size(L, 2));
     for n = 1:i
@@ -107,21 +107,21 @@ h_solid = plot(nan, nan, 'k-', 'LineWidth', 1.5);
 h_dash  = plot(nan, nan, 'k--', 'LineWidth', 1.5);
 
 % Dummy plots mapping to the custom color palette
-c2  = plot(nan, nan, 'Color', mycolors(1,:), 'LineWidth', 1.5);
-c4  = plot(nan, nan, 'Color', mycolors(2,:), 'LineWidth', 1.5);
-c6  = plot(nan, nan, 'Color', mycolors(3,:), 'LineWidth', 1.5);
-c8  = plot(nan, nan, 'Color', mycolors(4,:), 'LineWidth', 1.5);
-c28 = plot(nan, nan, 'Color', mycolors(5,:), 'LineWidth', 1.5);
+c1  = plot(nan, nan, 'Color', mycolors(1,:), 'LineWidth', 1.5);
+c3  = plot(nan, nan, 'Color', mycolors(2,:), 'LineWidth', 1.5);
+c5  = plot(nan, nan, 'Color', mycolors(3,:), 'LineWidth', 1.5);
+c7  = plot(nan, nan, 'Color', mycolors(4,:), 'LineWidth', 1.5);
+c27 = plot(nan, nan, 'Color', mycolors(5,:), 'LineWidth', 1.5);
 
 % Combine handles and define labels for a single-column legend
-h_lgd = [h_solid; h_dash; c2; c4; c6; c8; c28];
+h_lgd = [h_solid; h_dash; c1; c3; c5; c7; c27];
 labels = {'n-MUX', ...
-          '1-MUX', ...
-          'n=2', ...
-          'n=4', ...
-          'n=6', ...
-          'n=8', ...
-          'n=28'};
+          '0-MUX', ...
+          'n=1', ...
+          'n=3', ...
+          'n=5', ...
+          'n=7', ...
+          'n=27'};
 
 legend(h_lgd, labels, ...
        'FontName', 'Times New Roman', ...
@@ -131,3 +131,4 @@ legend(h_lgd, labels, ...
 xlabel('Distance (km)', 'FontSize', 14);
 
 ylabel('Secret Key Rate (bits/channel use)', 'FontSize', 14);
+
