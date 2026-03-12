@@ -38,9 +38,9 @@ ax.YScale = 'log';                   % Set y-axis to logarithmic scale
 hold on;
 grid on;
 
-for n = [2 4 6 8]
+for n = [1 3 5 7]
 
-    P_OS = eta_OS^(3*n - 3);                                         % Optical switch transmission probability
+    P_OS = eta_OS^(3*n);                                             % Optical switch transmission probability
     t_A = (2 * L) ./ C + (1 * L) ./ (C * P_s);                       % Time for Alice
     t_B = (2 * L) ./ C;                                              % Time for Bob
     
@@ -65,7 +65,7 @@ for n = [2 4 6 8]
     H2b = -(e_b_dc .* log2(e_b_dc) + (1 - e_b_dc) .* log2(1 - e_b_dc));
 
     % Raw and final key rate calculation
-    mux_raw_key_rate = n * (1 - H2b - H2p);
+    mux_raw_key_rate = (n+1) * (1 - H2b - H2p);
     mux_raw_key_rate(mux_raw_key_rate < 0) = 0;                      % Floor key rate at 0
     mux_raw_key_rate_final = 1 * ((P_OS .* P_s + (1 - (P_OS .* P_s)) .* P_dc) .* mux_raw_key_rate);
     % mux_raw_key_rate_final = mux_raw_key_rate_final * 10^8;
@@ -91,9 +91,9 @@ P_dc = 10^(-8);                      % Dark count probability
 T1 = 10;                             % Relaxation time (s)
 T2 = 500 * 10^(-3);                  % Coherence time (s)
 
-for n = [2 4 6 8]
+for n = [1 3 5 7]
     
-    P_OS = eta_OS^(3*n - 3);                                         % Optical switch transmission probability
+    P_OS = eta_OS^(3*n);                                             % Optical switch transmission probability
     t = (3 * L) / C;                                                 % Time
     e_p = (1 - exp(-t/T2)) / 2;                                      % Phase error rate
     e_b = (1 - exp(-t/T1)) / 2;                                      % Bit error rate
@@ -107,7 +107,7 @@ for n = [2 4 6 8]
     H2b = -(e_b_dc .* log2(e_b_dc) + (1 - e_b_dc) .* log2(1 - e_b_dc));
 
     % Raw and final key rate calculation
-    mux_raw_key_rate = n * (1 - H2b - H2p);
+    mux_raw_key_rate = (n+1) * (1 - H2b - H2p);
     mux_raw_key_rate(mux_raw_key_rate < 0) = 0;                      % Floor key rate at 0
     mux_raw_key_rate_final = 1 * ((P_OS * P_s) + (1 - (P_OS * P_s)) * P_dc) .* mux_raw_key_rate;
     % mux_raw_key_rate_final = mux_raw_key_rate_final * 10^8;
@@ -138,10 +138,10 @@ c8 = plot(nan, nan, 'Color', mycolors(4,:), 'LineWidth', 1.5);
 h_lgd = [h_solid; h_dash; c2; c4; c6; c8];
 labels = {'n-MUX MDI', ...
           'n-MUX Lo-Chau', ...
-          'n=2', ...
-          'n=4', ...
-          'n=6', ...
-          'n=8'};
+          'n=1', ...
+          'n=3', ...
+          'n=5', ...
+          'n=7'};
 
 legend(h_lgd, labels, ...
        'FontName', 'Times New Roman', ...
@@ -151,4 +151,5 @@ legend(h_lgd, labels, ...
 xlabel('Distance (km)', 'FontSize', 14);
 
 ylabel('Secret Key Rate (bits/channel use)', 'FontSize', 14);
+
 
